@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="20dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:id="@+id/profile_photo"
+                android:layout_marginTop="20dp"
+                app:civ_border_color="@color/black"
+                app:civ_border_width="0.5dp"
+                android:layout_centerHorizontal="true"
+                android:scrollbarSize="16sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Modifer la photo"
+                android:layout_below="@+id/profile_photo"
+                android:id="@+id/text_changephoto"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/pamp"/>
+
+            <!-- Username -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/text_changephoto"
+                android:layout_marginTop="80dp"
+                android:background="@drawable/grey_border_bottom"
+                android:id="@+id/relLayout1">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_username"
+                    android:layout_centerVertical="true"
+                    />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/username_edit"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="43dp"
+                    android:background="@null"
+                    android:inputType="textNoSuggestions"
+                    android:hint="Pseudo"
+
+                    />
+            </RelativeLayout>
+
+
+            <!-- Description -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/relLayout1"
+                android:background="@drawable/grey_border_bottom"
+                android:id="@+id/relLayout2"
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_description"
+                    android:layout_centerVertical="true"
+                    />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/description_edit"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="43dp"
+                    android:background="@null"
+                    android:inputType="textNoSuggestions"
+                    android:hint="Description"
+                    />
+            </RelativeLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:text="Informations privées"
+                android:textColor="@color/black"
+                android:layout_below="@id/relLayout2"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/grey_border_bottom"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/textprivate_info"/>
+
+
+            <!-- Email -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/textprivate_info"
+                android:background="@drawable/grey_border_bottom"
+                android:id="@+id/relLayout3"
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_email"
+                    android:layout_centerVertical="true"
+                    />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/email_edit"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="43dp"
+                    android:background="@null"
+                    android:inputType="textEmailAddress"
+                    android:hint="Email"
+
+                    />
+            </RelativeLayout>
+
+            <!-- Password -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/relLayout3"
+                android:background="@drawable/grey_border_bottom"
+                android:id="@+id/relLayout4"
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_pwd"
+                    android:layout_centerVertical="true"
+                    />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/password_edit"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="43dp"
+                    android:background="@null"
+                    android:inputType="textPassword"
+                    android:hint="Mot de passe"
+                    />
+            </RelativeLayout>
+
+            <!-- Password -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/relLayout4"
+                android:background="@drawable/grey_border_bottom"
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_pwd"
+                    android:layout_centerVertical="true"
+                    />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/password_edit2"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="43dp"
+                    android:background="@null"
+                    android:inputType="textPassword"
+                    android:hint="Confirmation du mot de passe"
+                    />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</merge>

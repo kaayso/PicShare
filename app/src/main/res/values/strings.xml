@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">PicShare</string>
+
+    <!--DataBase node-->
+    <string name="db_users">users</string>
+    <string name="user_account_settings">user_account_settings</string>
+
+    !--Extras-->
+    <string name="calling_activity">calling_activity</string>
+    <string name="profile_activity">profile_activity</string>
+
+
+
+</resources>

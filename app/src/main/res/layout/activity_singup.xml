@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/backgroundregister"
+        android:id="@+id/rellayout0">
+
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Inscription"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:fontFamily="cursive"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/textSignup"
+            />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_marginTop="82dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/logo"
+            android:id="@+id/logo"
+            app:civ_border_color="@color/black"
+            app:civ_border_width="0.5dp"
+            android:layout_gravity="center"/>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/relLayout2"
+        android:layout_below="@id/rellayout0">
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/inlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_centerHorizontal="true">
+
+            <EditText
+                android:id="@+id/input_email"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:background="@drawable/rec1"
+                android:hint="Adresse email"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="5dp"
+                android:textColorLink="@color/colorAccent"
+                android:textSize="15sp" />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+        android:id="@+id/inlayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inlayout"
+        android:layout_centerHorizontal="true">
+
+        <EditText
+            android:id="@+id/input_username"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:background="@drawable/rec1"
+            android:hint="Pseudo"
+            android:inputType="textAutoComplete"
+            android:paddingLeft="5dp"
+            android:textColorLink="@color/colorAccent"
+            android:textSize="15sp"
+            />
+    </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/inlayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/inlayout1"
+            android:layout_centerHorizontal="true">
+
+            <EditText
+                android:id="@+id/input_pwd"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:background="@drawable/rec1"
+                android:fontFamily="sans-serif-condensed"
+                android:hint="Mot de passe"
+                android:inputType="textPassword"
+                android:paddingLeft="5dp"
+                android:textColorLink="@color/colorAccent"
+                android:textSize="15sp"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.v7.widget.AppCompatButton
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="75dp"
+            android:id="@+id/register_btn"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_btn"
+            android:fontFamily="cursive"
+            android:text="S'inscrire"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
+        <ProgressBar
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:id="@+id/progressBar"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Patientez svp..."
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:layout_below="@+id/progressBar"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/waiting"
+            />
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

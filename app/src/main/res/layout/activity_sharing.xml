@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/relLayout1"
+                android:background="@drawable/white_grey_border_bottom">
+                <!--Toolbar-->
+                <include layout="@layout/snippet_top_sharingtoolbar"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/relLayout2"
+                android:layout_below="@id/relLayout1">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"
+                    android:id="@+id/imgShare"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="40dp"
+                    android:background="@drawable/black_border"
+                    />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/description"
+                    android:layout_toRightOf="@id/imgShare"
+                    android:hint="Description de la photo..."
+                    android:layout_marginLeft="15dp"
+                    android:textSize="16sp"
+                    android:layout_centerVertical="true"
+                    android:inputType="textAutoComplete"
+                    android:background="@null"
+                    />
+            <ProgressBar
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@id/progressBar"
+                android:layout_centerInParent="true"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/relLayout2"
+                android:background="@drawable/white_grey_border_bottom">
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/checkbox"
+                    android:layout_marginLeft="13dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Privée"
+                    android:layout_toRightOf="@+id/checkbox"
+                    android:textColor="@color/black"
+                    android:id="@+id/pub"
+                    />
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey">
+
+    <!--Top -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relLayout1">
+        <include layout="@layout/snippet_top_comments"/>
+    </RelativeLayout>
+
+
+    <!--Center -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/relLayout2"
+        android:layout_below="@id/relLayout1"
+        android:layout_marginBottom="50dp">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/list_view"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="5dp">
+
+        </ListView>
+
+    </RelativeLayout>
+
+
+    <!--Bottom -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/relLayout3"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/white_grey_border_top">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:background="@null"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:hint="Ajouter un commentaire..."
+            android:id="@+id/comment"
+            android:textSize="15sp"
+            />
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:id="@+id/ivPostComment"
+            android:src="@drawable/ic_send"
+            />
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

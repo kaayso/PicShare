@@ -1,0 +1,64 @@
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/profileToolbar">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/ivCloseshare"
+                    android:src="@drawable/ic_close"
+
+                    />
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/ivCloseshare"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/spinner"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorPrimary"
+                    android:gravity="center_vertical"
+                    android:text = "Gallerie"
+                    android:layout_marginRight="50dp">
+
+                </Spinner>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Suivant"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/pamp"
+                    android:id="@+id/tvNext"
+                    />
+
+            </RelativeLayout>
+
+
+
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+
+
+</merge>
