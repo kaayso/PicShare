@@ -67,7 +67,7 @@ public class PublishingListAdapter extends ArrayAdapter<Photo> {
     private static class ViewHolder{
         public TextView mdate, musername, mcaption, matusername, mlikes, mcomments;
         public CircleImageView mprofilePhoto;
-        ImageView redHeart, whiteHeart, comment, share, menu, date;
+        ImageView redHeart, whiteHeart, comment, share, menu, visibilityPublic, visibilityPrivate;
         String LikesString;
         SquareImageView image;
 
@@ -88,32 +88,32 @@ public class PublishingListAdapter extends ArrayAdapter<Photo> {
 
 
         final ViewHolder viewHolder;
+        convertView = layoutInflater.inflate(layoutRessource, parent, false);
 
-            convertView = layoutInflater.inflate(layoutRessource, parent, false);
+        viewHolder = new ViewHolder();
 
-            viewHolder = new ViewHolder();
+        viewHolder.musername = (TextView) convertView.findViewById(R.id.username);
+        viewHolder.matusername = (TextView) convertView.findViewById(R.id.Atusername);
+        viewHolder.mdate = (TextView) convertView.findViewById(R.id.tvDate);
+        viewHolder.mcaption = (TextView) convertView.findViewById(R.id.image_caption);
+        viewHolder.mlikes = (TextView) convertView.findViewById(R.id.image_likes);
+        viewHolder.mcomments = (TextView) convertView.findViewById(R.id.image_comments);
+        viewHolder.mprofilePhoto = (CircleImageView) convertView.findViewById(R.id.profile_photo);
+        viewHolder.image = (SquareImageView) convertView.findViewById(R.id.post_img);
+        viewHolder.redHeart = (ImageView) convertView.findViewById(R.id.iv_heart_red);
+        viewHolder.whiteHeart = (ImageView) convertView.findViewById(R.id.iv_heart);
+        viewHolder.comment = (ImageView) convertView.findViewById(R.id.iv_comment);
+        viewHolder.share = (ImageView) convertView.findViewById(R.id.iv_share);
+        viewHolder.menu = (ImageView) convertView.findViewById(R.id.ivMenu_post);
+        viewHolder.visibilityPublic = (ImageView) convertView.findViewById(R.id.ivPublic);
+        viewHolder.visibilityPrivate = (ImageView) convertView.findViewById(R.id.ivPrivate);
 
-            viewHolder.musername = (TextView) convertView.findViewById(R.id.username);
-            viewHolder.matusername = (TextView) convertView.findViewById(R.id.Atusername);
-            viewHolder.mdate = (TextView) convertView.findViewById(R.id.tvDate);
-            viewHolder.mcaption = (TextView) convertView.findViewById(R.id.image_caption);
-            viewHolder.mlikes = (TextView) convertView.findViewById(R.id.image_likes);
-            viewHolder.mcomments = (TextView) convertView.findViewById(R.id.image_comments);
-            viewHolder.mprofilePhoto = (CircleImageView) convertView.findViewById(R.id.profile_photo);
-            viewHolder.image = (SquareImageView) convertView.findViewById(R.id.post_img);
-            viewHolder.redHeart = (ImageView) convertView.findViewById(R.id.iv_heart_red);
-            viewHolder.whiteHeart = (ImageView) convertView.findViewById(R.id.iv_heart);
-            viewHolder.comment = (ImageView) convertView.findViewById(R.id.iv_comment);
-            viewHolder.share = (ImageView) convertView.findViewById(R.id.iv_share);
-            viewHolder.menu = (ImageView) convertView.findViewById(R.id.ivMenu_post);
-            viewHolder.date = (ImageView) convertView.findViewById(R.id.ivdate);
+        viewHolder.heart = new Heart(viewHolder.whiteHeart,viewHolder.redHeart);
+        viewHolder.photo = getItem(position);
+        viewHolder.detector = new GestureDetector(mcontext, new GestureListener(viewHolder));
+        viewHolder.users = new StringBuilder();
 
-            viewHolder.heart = new Heart(viewHolder.whiteHeart,viewHolder.redHeart);
-            viewHolder.photo = getItem(position);
-            viewHolder.detector = new GestureDetector(mcontext, new GestureListener(viewHolder));
-            viewHolder.users = new StringBuilder();
-
-            convertView.setTag(viewHolder);
+        convertView.setTag(viewHolder);
 
 
         Log.d(TAG, "liked : "+ viewHolder.likeByCurrentUser);
@@ -159,6 +159,12 @@ public class PublishingListAdapter extends ArrayAdapter<Photo> {
 
         //set date
         viewHolder.mdate.setText(getItem(position).getDate_created());
+
+        //set visibility
+        if (getItem(position).getVisibility().equals("private")){
+            viewHolder.visibilityPrivate.setVisibility(View.VISIBLE);
+            viewHolder.visibilityPublic.setVisibility(View.INVISIBLE);
+        }
 
         //set caption
         viewHolder.mcaption.setText(getItem(position).getCaption());

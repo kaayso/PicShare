@@ -57,6 +57,8 @@ public class ViewProfileFragment extends Fragment {
     public interface  OnSelectedImageListener{
         void onGridImageSelected(Photo photo, int activityNumber);
     }
+    private List<User> mUsers;
+    private List<String> mUsersID;
 
     OnSelectedImageListener onSelectedImageListener;
 
@@ -103,6 +105,8 @@ public class ViewProfileFragment extends Fragment {
         mBackButton = (ImageView) view.findViewById(R.id.back_Arrow);
         mtextEditProfile = (TextView) view.findViewById(R.id.textEditProfile);
         mContext = getActivity();
+        mUsers = new ArrayList<>();
+        mUsersID = new ArrayList<>();
 
         //On visit (widgets)
         mFollow = (TextView) view.findViewById(R.id.follow);
@@ -113,6 +117,7 @@ public class ViewProfileFragment extends Fragment {
 
         try {
             mUser = getUserFromBundle();
+            //searchForMatch();
             init();
             Log.d(TAG, "onCreateView: user getting :" + mUser.toString());
         }catch (ClassCastException e){
@@ -518,7 +523,12 @@ public class ViewProfileFragment extends Fragment {
                         likes.add(like);
                     }
                     photo.setLikes(likes);
-                    photos_user.add(photo);
+
+                    Log.d(TAG, "onDataChange: friends list size: "+ mUsers.size());
+
+                    if(!photo.getVisibility().equals("private")){
+                        photos_user.add(photo);
+                    }
 
                 }
 
@@ -534,6 +544,18 @@ public class ViewProfileFragment extends Fragment {
             }
         });
 
+    }
+
+
+
+    private boolean isMyfFriend(List<User> friends , User user){
+        for(int i = 0 ; i < friends.size(); i++){
+            if (friends.get(i).getUser_id().equals(user.getUser_id())){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void setupAllImageGrid(final ArrayList<Photo> photos_user){

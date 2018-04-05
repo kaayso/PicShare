@@ -280,6 +280,7 @@ public class ProfileFragment extends Fragment {
                         }
                         photo.setLikes(likes);
                         photos_user.add(photo);
+
                     }catch (NullPointerException e){
                         Log.d(TAG, "onDataChange: NullPointerException " +e.getMessage());
                     }

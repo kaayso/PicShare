@@ -61,7 +61,7 @@ public class PostFragment extends Fragment {
     private BottomNavigationViewEx bottomNavigationViewEx;
     private SquareImageView mImageView;
     private TextView mcomments, mcaption, musername, matUsername, mDate , mLikes;
-    private ImageView mBack_arrow, mMenu, mheart, mheartRed, mComment;
+    private ImageView mBack_arrow, mMenu, mheart, mheartRed, mComment, mvisibilityPublic, mvisibilityPrivate;
     private CircleImageView mProfilPhoto;
     private Heart mlike;
 
@@ -103,6 +103,8 @@ public class PostFragment extends Fragment {
         mLikes = (TextView) view.findViewById(R.id.image_likes);
         mDate = (TextView) view.findViewById(R.id.tvDate);
         mcomments = (TextView) view.findViewById(R.id.image_comments);
+        mvisibilityPublic = (ImageView) view.findViewById(R.id.ivPublic);
+        mvisibilityPrivate = (ImageView) view.findViewById(R.id.ivPrivate);
         mgestureDetector = new GestureDetector(getActivity(), new GestureListener());
 
         mlike = new Heart(mheart,mheartRed);
@@ -226,6 +228,12 @@ public class PostFragment extends Fragment {
         mDate.setText(mphoto.getDate_created());
         mcaption.setText(mphoto.getCaption());
         mLikes.setText(mLikesDisplay);
+
+
+        if (mphoto.getVisibility().equals("private")){
+            mvisibilityPrivate.setVisibility(View.VISIBLE);
+            mvisibilityPublic.setVisibility(View.INVISIBLE);
+        }
 
         if(mphoto.getComments().size() > 1){
             mcomments.setText("Voir les "+ (mphoto.getComments().size()) + " commentaires...");

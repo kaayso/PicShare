@@ -204,7 +204,10 @@ public class HomeFragment extends Fragment {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Log.d(TAG, "onDataChange: match founded step 2 with : "+ keyID);
-                            mFriends2.add(keyID);
+                            for (DataSnapshot ds: dataSnapshot.getChildren() ){
+                                Log.d(TAG, "onDataChange  data retreived : "+ ds.getValue().toString());
+                                mFriends2.add(keyID);                            }
+
                             try {
                                 Log.d(TAG, "searchForMatch: useridList len: "+ mFriends2.size());
                                 for (int i = 0; i< mFriends2.size() ; i++){
@@ -218,6 +221,7 @@ public class HomeFragment extends Fragment {
                                                 Log.d(TAG, "onDataChange: building user object: "+ds.getValue(User.class).getUsername());
                                                 mFriends.add(ds.getValue(User.class).getUser_id());
                                             }
+                                            // they are friends, make something
                                             getPhotosOfFriends();                                        }
 
                                         @Override

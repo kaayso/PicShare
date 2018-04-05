@@ -53,26 +53,38 @@
                             android:textSize="12sp" />
 
                         <ImageView
-                            android:id="@+id/ivdate"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:id="@+id/ivPublic"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
                             android:layout_alignParentTop="true"
                             android:layout_marginEnd="20dp"
                             android:layout_marginRight="20dp"
-                            android:layout_marginTop="30dp"
-                            android:src="@drawable/ic_time" />
+                            android:layout_marginTop="25dp"
+                            android:src="@drawable/ic_alert" />
+                        <ImageView
+                            android:id="@+id/ivPrivate"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginTop="25dp"
+                            android:src="@drawable/ic_pwd"
+                            android:visibility="invisible"/>
 
                         <TextView
                             android:id="@+id/tvDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/ivdate"
-                            android:layout_alignRight="@id/ivdate"
+                            android:layout_alignBottom="@+id/ivPrivate"
+                            android:layout_alignRight="@id/ivPrivate"
                             android:layout_marginRight="30dp"
                             android:text="10/10/2012 23h23"
-                            android:layout_marginBottom="5dp"
+                            android:layout_marginBottom="3dp"
                             android:textSize="10sp"
 
                             />

@@ -2,6 +2,7 @@ package com.kaayso.benyoussafaycel.android_app.Tools;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -23,7 +24,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
  */
 
 public class UnivImageLoader {
-
+    private static final String TAG = "UnivImageLoader";
     private static final int defaultImage = R.drawable.ic_profil;
 
     private Context mctx;
@@ -42,12 +43,12 @@ public class UnivImageLoader {
                 .cacheOnDisk(true).resetViewBeforeLoading(true)
                 .considerExifParams(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
-                .displayer(new FadeInBitmapDisplayer(200)).build();
+                .displayer(new FadeInBitmapDisplayer(400)).build();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(mctx)
                 .defaultDisplayImageOptions(defaultOptions)
                 .memoryCache(new WeakMemoryCache())
-                .diskCacheSize(100 * 1024 *1024).build();
+                .diskCacheSize(150 * 1024 *1024).build();
         myConfig = config;
 
         return config;
@@ -62,7 +63,11 @@ public class UnivImageLoader {
     public static  void setImage (String imgUrl, ImageView imageView, final ProgressBar progressBar , String pref ){
 
         ImageLoader imageLoader = ImageLoader.getInstance();
-        //imageLoader.init(myConfig);
+        try {
+            imageLoader.init(myConfig);
+        }catch (NullPointerException e){
+            Log.d(TAG, "setImage: NullPointerException: "+e.getMessage());
+        }
         imageLoader.displayImage(pref + imgUrl, imageView, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {

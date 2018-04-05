@@ -74,30 +74,37 @@ public class FriendsFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot ds: dataSnapshot.getChildren() ){
-                    Log.d(TAG, "onDataChange: match founded step 1: "+ds.child("user_id").getValue().toString());
+                    Log.d(TAG, "onDataChange: getting friends idstep 1: "+ds.child("user_id").getValue().toString());
 
                     final String keyID = ds.child("user_id").getValue().toString();
-                    Query query = databaseReference.child("friends")
-                            .child(keyID).orderByChild("user_id")
+
+                    Query query2 = databaseReference.child("friends")
+                            .child(keyID)
+                            .orderByChild("user_id")
                             .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    //for each user verify if current user is friend with him
+                    query2.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Log.d(TAG, "onDataChange: match founded step 2 with : "+ keyID);
-                            mUsersID.add(keyID);
+                            for (DataSnapshot ds: dataSnapshot.getChildren() ){
+                                Log.d(TAG, "onDataChange  data retreived : "+ ds.getValue().toString());
+                                mUsersID.add(keyID);
+                            }
                             try {
                                 Log.d(TAG, "searchForMatch: useridList len: "+ mUsersID.size());
                                 for (int i = 0; i< mUsersID.size() ; i++){
                                     DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
-                                    Query query2 = myRef.child("users").orderByChild("user_id").equalTo(mUsersID.get(i));
+                                    Query query3 = myRef.child("users").orderByChild("user_id").equalTo(mUsersID.get(i));
 
-                                    query2.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    query3.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             for (DataSnapshot ds: dataSnapshot.getChildren() ){
-                                                Log.d(TAG, "onDataChange: building user object: "+ds.getValue(User.class).getUsername());
+                                                Log.d(TAG, "onDataChange: this user is a friend: "+ds.getValue(User.class).getUsername());
                                                 mUsers.add(ds.getValue(User.class));
+
                                             }
                                             updateListUsers();
                                         }
