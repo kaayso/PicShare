@@ -125,6 +125,7 @@ public class RegisterActivity extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()){
                     if (ds.exists()){
                         adding = mdatabaseReference.push().getKey().substring(2,10);
+                        adding.toLowerCase();
                         Log.d(TAG, "onDataChange: username is already exits, add rand String"+ adding);                    }
                 }
                 String usrname ="";
