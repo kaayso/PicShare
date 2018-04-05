@@ -97,7 +97,10 @@ public class HomeFragment extends Fragment {
                 for (DataSnapshot snap : dataSnapshot.getChildren()){
                     Log.d(TAG, "onDataChange: found following users for current user. "+ snap.child("user_id").getValue());
 
-                    mfollowing.add(snap.child("user_id").getValue().toString());
+                    if (!mfollowing.contains(snap.child("user_id").getValue().toString())){
+                        mfollowing.add(snap.child("user_id").getValue().toString());
+                    }
+
                 }
 
                 //get photos
@@ -111,6 +114,7 @@ public class HomeFragment extends Fragment {
         });
 
     }
+
 
     public Photo buildPhoto (Map<String,Object> map){
         Log.d(TAG, "buildPhoto: building photo");
@@ -206,7 +210,11 @@ public class HomeFragment extends Fragment {
                             Log.d(TAG, "onDataChange: match founded step 2 with : "+ keyID);
                             for (DataSnapshot ds: dataSnapshot.getChildren() ){
                                 Log.d(TAG, "onDataChange  data retreived : "+ ds.getValue().toString());
-                                mFriends2.add(keyID);                            }
+
+                                if (!mFriends2.contains(keyID)){
+                                    mFriends2.add(keyID);
+                                }
+                            }
 
                             try {
                                 Log.d(TAG, "searchForMatch: useridList len: "+ mFriends2.size());
@@ -219,7 +227,10 @@ public class HomeFragment extends Fragment {
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             for (DataSnapshot ds: dataSnapshot.getChildren() ){
                                                 Log.d(TAG, "onDataChange: building user object: "+ds.getValue(User.class).getUsername());
-                                                mFriends.add(ds.getValue(User.class).getUser_id());
+
+                                                if (!mFriends.contains(ds.getValue(User.class).getUser_id())){
+                                                    mFriends.add(ds.getValue(User.class).getUser_id());
+                                                }
                                             }
                                             // they are friends, make something
                                             getPhotosOfFriends();                                        }
@@ -285,7 +296,7 @@ public class HomeFragment extends Fragment {
                         }
 
                         photo.setComments(mcomments);
-                        if(photo.getVisibility().equals("private")){
+                        if(photo.getVisibility().equals("private") && !isInList(mphotos,photo)){
                             mphotos.add(photo);
                         }
 
@@ -300,6 +311,14 @@ public class HomeFragment extends Fragment {
                 }
             });
         }
+    }
+    private boolean isInList(ArrayList<Photo> photos , Photo photo) {
+        for (int i = 0; i < photos.size(); i++) {
+            if (photos.get(i).getPhoto_id().equals(photo.getPhoto_id())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private ArrayList<String> removeDuplication(ArrayList<String> friends, ArrayList<String> following){

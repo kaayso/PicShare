@@ -548,16 +548,6 @@ public class ViewProfileFragment extends Fragment {
 
 
 
-    private boolean isMyfFriend(List<User> friends , User user){
-        for(int i = 0 ; i < friends.size(); i++){
-            if (friends.get(i).getUser_id().equals(user.getUser_id())){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     private void setupAllImageGrid(final ArrayList<Photo> photos_user){
         int griWidth = getResources().getDisplayMetrics().widthPixels;
         int imgWidth = griWidth/NUM_COLS;

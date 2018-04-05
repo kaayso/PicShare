@@ -456,7 +456,7 @@ public class DatabaseMethods {
             String s = stringBuilder.toString().replace("#", ",#");
             return s.substring(1, s.length());
         }
-        return desc;
+        return "";
 
     }
 

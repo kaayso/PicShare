@@ -103,7 +103,9 @@ public class FriendsFragment extends Fragment {
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             for (DataSnapshot ds: dataSnapshot.getChildren() ){
                                                 Log.d(TAG, "onDataChange: this user is a friend: "+ds.getValue(User.class).getUsername());
-                                                mUsers.add(ds.getValue(User.class));
+                                               if(!isMyfFriend(mUsers,ds.getValue(User.class))) {
+                                                   mUsers.add(ds.getValue(User.class));
+                                               }
 
                                             }
                                             updateListUsers();
@@ -136,6 +138,15 @@ public class FriendsFragment extends Fragment {
 
 
 
+    }
+
+    private boolean isMyfFriend(List<User> friends , User user) {
+        for (int i = 0; i < friends.size(); i++) {
+            if (friends.get(i).getUser_id().equals(user.getUser_id())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void updateListUsers(){
