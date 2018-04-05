@@ -129,7 +129,14 @@ public class PublishingListAdapter extends ArrayAdapter<Photo> {
         List<Comment> comments = getItem(position).getComments();
         Log.d(TAG, "getView: cette photo a :" + comments.size() +" commentaires");
 
-        viewHolder.mcomments.setText("Voir les commentaires...");
+        if(comments.size() > 1){
+            viewHolder.mcomments.setText("Voir les "+ (comments.size()) + " commentaires...");
+        }else if(comments.size() == 1){
+            viewHolder.mcomments.setText("Voir le commentaire");
+        }
+        else if(comments.size() == 0){
+            viewHolder.mcomments.setText("");
+        }
 
         viewHolder.mcomments.setOnClickListener(new View.OnClickListener() {
             @Override
