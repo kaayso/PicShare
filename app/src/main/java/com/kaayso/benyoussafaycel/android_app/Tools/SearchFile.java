@@ -1,5 +1,7 @@
 package com.kaayso.benyoussafaycel.android_app.Tools;
 
+import android.util.Log;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -8,7 +10,7 @@ import java.util.ArrayList;
  */
 
 public class SearchFile {
-
+    private static final String TAG = "SearchFile";
 
     public static ArrayList<String> getDirectoriesName(ArrayList<String> directories){
         ArrayList<String> names = new ArrayList<>();
@@ -44,8 +46,12 @@ public class SearchFile {
         File file = new File(directory);
         File [] files = file.listFiles();
 
-        for(int i=0 ; i<files.length ; i++){
-            if(files[i].isFile()) pathArray.add(files[i].getAbsolutePath());
+        try {
+            for(int i=0 ; i<files.length ; i++){
+                if(files[i].isFile()) pathArray.add(files[i].getAbsolutePath());
+            }
+        }catch (NullPointerException e){
+            Log.d(TAG, "getFilePaths: NullPointerException : "+ e.getMessage());
         }
         return pathArray;
     }

@@ -31,6 +31,7 @@ import com.kaayso.benyoussafaycel.android_app.Profile.ProfileActivity;
 import com.kaayso.benyoussafaycel.android_app.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -415,8 +416,10 @@ public class PublishingListAdapter extends ArrayAdapter<Photo> {
                                 for (DataSnapshot snap : dataSnapshot.getChildren()){
                                     Log.d(TAG, "onDataChange: found like: "+ snap.getValue(User.class).getUsername());
 
-                                    viewHolder.users .append(snap.getValue(User.class).getUsername());
-                                    viewHolder.users .append(",");
+                                    if(! viewHolder.users.toString().contains(snap.getValue(User.class).getUsername()+",")){
+                                        viewHolder.users .append(snap.getValue(User.class).getUsername());
+                                        viewHolder.users .append(",");
+                                    }
 
                                 }
                                 String[] splitUsers = viewHolder.users .toString().split(",");
@@ -481,7 +484,6 @@ public class PublishingListAdapter extends ArrayAdapter<Photo> {
 
 
     }
-
 
     private void addNewLike(ViewHolder viewHolder){
         Log.d(TAG, "addNewLike: adding new like");

@@ -119,7 +119,11 @@ public class GalleryFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "onItemSelected: selected "+directories.get(position));
-                setupGrid(directories.get(position));
+                try {
+                    setupGrid(directories.get(position));
+                }catch (NullPointerException e){
+                    Log.d(TAG, "onItemSelected: NullPointerException: "+e.getMessage());
+                }
             }
 
             @Override

@@ -107,11 +107,12 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
 
+
     /*
        Setup firebase
     */
      /*
-        Check if current username already exists on database
+        Check if current username already exist s on database
      */
     private void checkIfUsernameExists(final String username) {
         Log.d(TAG, "checkIfUsernameExists: checking if " + username +" exists already");
