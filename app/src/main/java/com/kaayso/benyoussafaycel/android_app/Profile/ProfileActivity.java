@@ -71,11 +71,7 @@ public class ProfileActivity extends AppCompatActivity implements  ProfileFragme
 
 
         init();
-       /* setupBottomNavigationView();
-        setupWidgets();
-        setupToolbar();
-        setProfileImage();
-        imgsGridsetup();*/
+
     }
 
     private void init(){

@@ -24,8 +24,9 @@
 
     <item
         android:id="@+id/ic_alert"
-        android:icon="@drawable/ic_notifications"
-        android:title="">
+        android:icon="@drawable/ic_groups"
+        android:title=""
+        >
     </item>
 
     <item

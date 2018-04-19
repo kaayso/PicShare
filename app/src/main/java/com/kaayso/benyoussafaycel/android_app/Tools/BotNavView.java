@@ -10,7 +10,7 @@ import android.view.MenuItem;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.kaayso.benyoussafaycel.android_app.Home.HomeActivity;
-import com.kaayso.benyoussafaycel.android_app.Notifs.NotifsActivity;
+import com.kaayso.benyoussafaycel.android_app.Group.GroupActivity;
 import com.kaayso.benyoussafaycel.android_app.Profile.ProfileActivity;
 import com.kaayso.benyoussafaycel.android_app.R;
 import com.kaayso.benyoussafaycel.android_app.Search.SearchActivity;
@@ -64,7 +64,7 @@ public class BotNavView {
                         break;
 
                     case R.id.ic_alert:
-                        Intent intent4  = new Intent(context, NotifsActivity.class);//NUM_ACTIVITY = 3
+                        Intent intent4  = new Intent(context, GroupActivity.class);//NUM_ACTIVITY = 3
                         context.startActivity(intent4);
                         activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         break;

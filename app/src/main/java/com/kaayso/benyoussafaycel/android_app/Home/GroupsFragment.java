@@ -23,4 +23,5 @@ public class GroupsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_groups,container,false);
         return view;
     }
+
 }

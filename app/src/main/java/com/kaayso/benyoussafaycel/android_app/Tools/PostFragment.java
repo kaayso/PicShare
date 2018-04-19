@@ -56,7 +56,7 @@ public class PostFragment extends Fragment {
 
     private OnCommentSelectedListener monCommentSelectedListener;
     private Bundle bundle;
-    private int mActivityNumber=0;
+    private int mActivityNumber=4;
     private Photo mphoto;
     private BottomNavigationViewEx bottomNavigationViewEx;
     private SquareImageView mImageView;

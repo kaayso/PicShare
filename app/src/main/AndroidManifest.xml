@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Notifs.NotifsActivity"/>
+        <activity android:name=".Group.GroupActivity" android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".Search.SearchActivity" android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".Adding.ShareActivity" />
         <activity android:name=".Adding.SharingActivity"/>

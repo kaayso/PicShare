@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="20dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:id="@+id/group_photo"
+                android:layout_marginTop="20dp"
+                app:civ_border_color="@color/black"
+                app:civ_border_width="0.5dp"
+                android:layout_centerHorizontal="true"
+                android:scrollbarSize="16sp"
+                android:src="@drawable/ic_groups"
+                />
+
+            <!-- group name -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/group_photo"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/grey_border_bottom"
+                android:id="@+id/relLayout1">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_username"
+                    android:layout_centerVertical="true"
+                    />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/groupName_edit"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="43dp"
+                    android:background="@null"
+                    android:inputType="textNoSuggestions"
+                    android:hint="Nom du groupe"
+
+                    />
+            </RelativeLayout>
+
+
+            <!-- Description -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@id/relLayout1"
+                android:background="@drawable/grey_border_bottom"
+                android:id="@+id/relLayout2"
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_description"
+                    android:layout_centerVertical="true"
+                    />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/description_edit"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="43dp"
+                    android:background="@null"
+                    android:inputType="textNoSuggestions"
+                    android:hint="Description du groupe..."
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/relLayout3"
+                android:layout_below="@+id/relLayout2"
+                android:layout_marginTop="40dp">
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/checkbox_private"
+                    android:gravity="center_vertical"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Privée"
+                    android:textSize="15sp"
+                    android:id="@+id/tv_private"
+                    android:textColor="@color/black"
+                    android:layout_toRightOf="@+id/checkbox_private"
+                    android:gravity="center_vertical"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:id="@+id/relLayout4"
+                android:layout_below="@id/relLayout3"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/rounded_blue_btn"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Valider"
+                    android:id="@+id/submit"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    android:layout_centerInParent="true"
+                    />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </ScrollView>
+
+</merge>
