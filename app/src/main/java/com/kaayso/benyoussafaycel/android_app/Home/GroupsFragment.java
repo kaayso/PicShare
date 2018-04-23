@@ -28,6 +28,7 @@ import com.kaayso.benyoussafaycel.android_app.Models.Comment;
 import com.kaayso.benyoussafaycel.android_app.Models.Group;
 import com.kaayso.benyoussafaycel.android_app.Models.Photo;
 import com.kaayso.benyoussafaycel.android_app.R;
+import com.kaayso.benyoussafaycel.android_app.Search.SearchActivity;
 import com.kaayso.benyoussafaycel.android_app.Tools.GroupListAdapter;
 import com.kaayso.benyoussafaycel.android_app.Tools.PublishingListAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -60,7 +61,7 @@ public class GroupsFragment extends Fragment {
 
     private TextView name, description, users_number, tv_addPost;
     private CircleImageView groupPhoto;
-    private ImageView add, added, menu, crown;
+    private ImageView add, added, menu, crown, addUser, iv_visibilityPivate, iv_visibilityPublic;
     private RelativeLayout relativeLayout;
 
     @Nullable
@@ -78,8 +79,11 @@ public class GroupsFragment extends Fragment {
         tv_addPost = (TextView) view.findViewById(R.id.tv_addPost);
         groupPhoto = (CircleImageView) view.findViewById(R.id.group_photo);
         add = (ImageView) view.findViewById(R.id.add_group);
+        iv_visibilityPivate = (ImageView) view.findViewById(R.id.iv_visibilityPivate);
+        iv_visibilityPublic = (ImageView) view.findViewById(R.id.iv_visibilityPublic);
         added = (ImageView) view.findViewById(R.id.checked_group);
         crown = (ImageView) view.findViewById(R.id.iv_crown);
+        addUser = (ImageView) view.findViewById(R.id.iv_addUser);
         menu = (ImageView) view.findViewById(R.id.iv_menu);
         relativeLayout = (RelativeLayout) view.findViewById(R.id.relLayout1);
 
@@ -114,6 +118,14 @@ public class GroupsFragment extends Fragment {
         added.setVisibility(View.INVISIBLE);
         menu.setVisibility(View.INVISIBLE);
         tv_addPost.setVisibility(View.VISIBLE);
+        addUser.setVisibility(View.VISIBLE);
+
+        //set visibility icon
+        if(mCurrentGroup.getVisibility().equals("private")){
+            iv_visibilityPublic.setVisibility(View.INVISIBLE);
+            iv_visibilityPivate.setVisibility(View.VISIBLE);
+        }
+
 
         //set crown
         if(mCurrentGroup.getOwner_id().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
@@ -157,6 +169,18 @@ public class GroupsFragment extends Fragment {
                 Intent i = new Intent(mContext, ShareActivity.class);
                 i.putExtra("PublishingGroupId", mCurrentGroup.getGroup_id());
                 mContext.startActivity(i);
+            }
+        });
+
+        addUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: add new user in the current group: "+mCurrentGroup.toString());
+                Intent i = new Intent(mContext, SearchActivity.class);
+                i.putExtra("fragment","GroupsFragment");
+                i.putExtra("group",mCurrentGroup);
+                mContext.startActivity(i);
+
             }
         });
 

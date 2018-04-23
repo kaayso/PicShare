@@ -151,7 +151,7 @@ public class FriendsFragment extends Fragment {
     private void updateListUsers(){
 
         Log.d(TAG, "updateUsersList: updating users list");
-        userListAdapter = new UserListAdapter(mContext, R.layout.layout_user_search, mUsers );
+        userListAdapter = new UserListAdapter(mContext, R.layout.layout_user_search, mUsers,null);
         mListview.setAdapter(userListAdapter);
         mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

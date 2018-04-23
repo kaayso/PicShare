@@ -114,7 +114,7 @@ public class SharingActivity extends AppCompatActivity{
 
                 }
                 // publishing for HomeFragment
-                else{
+                else if(!getIntent().hasExtra("PublishingGroupId")){
                     //came from gallery
                     if(getIntent().hasExtra("Selected Image")){
                         if (checkBox.isChecked() && !description.equals("")){

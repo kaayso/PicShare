@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.kaayso.benyoussafaycel.android_app.Models.Group;
 import com.kaayso.benyoussafaycel.android_app.Models.User;
 import com.kaayso.benyoussafaycel.android_app.Models.UserAccountSettings;
 import com.kaayso.benyoussafaycel.android_app.Profile.ProfileActivity;
@@ -50,6 +51,7 @@ public class SearchActivity extends AppCompatActivity {
     private EditText mInputSearch;
     private List<User> mUsers;
     private UserListAdapter userListAdapter;
+    private Group mCurrentGroup = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,12 +62,20 @@ public class SearchActivity extends AppCompatActivity {
         mListview = (ListView) findViewById(R.id.list_view);
         mContext = SearchActivity.this;
 
+        getExtras();
         closeKeyBoard();
         setupBottomNavigationView();
         initTextListener();
     }
 
-
+    private void getExtras(){
+        Log.d(TAG, "getExtra: getting extras.");
+        if(getIntent().hasExtra("fragment")){
+            if(getIntent().hasExtra("group")){
+                mCurrentGroup = getIntent().getParcelableExtra("group");
+            }
+        }
+    }
     private void closeKeyBoard(){
         if(getCurrentFocus() != null){
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
@@ -136,7 +146,8 @@ public class SearchActivity extends AppCompatActivity {
 
     private void updateUsersList(){
         Log.d(TAG, "updateUsersList: updating users list");
-        userListAdapter = new UserListAdapter(mContext, R.layout.layout_user_search, mUsers );
+
+        userListAdapter = new UserListAdapter(mContext, R.layout.layout_user_search, mUsers,mCurrentGroup);
         mListview.setAdapter(userListAdapter);
         mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

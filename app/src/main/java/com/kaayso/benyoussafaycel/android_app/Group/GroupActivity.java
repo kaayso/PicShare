@@ -70,8 +70,8 @@ public class GroupActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mviewPager);
 
-        tabLayout.getTabAt(1).setText("Nouveau groupe");
-        tabLayout.getTabAt(0).setText("Tous les groupes");
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_add_group);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_list);
     }
 
 

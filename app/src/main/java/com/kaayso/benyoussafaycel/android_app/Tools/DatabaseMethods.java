@@ -443,7 +443,7 @@ public class DatabaseMethods {
          */
 
         if(groupName.equals("new_photo")){
-            Log.d(TAG, "uploadPhoto: new photo");
+            Log.d(TAG, "uploadPhoto: new photo to a group");
             StorageReference storageReference = mStorageRef.child(pathsFile.FIREBASE_IMG_STORAGE + "/"
                     + FirebaseAuth.getInstance().getCurrentUser().getUid()+"/photo_"+(countImg+1));
 
