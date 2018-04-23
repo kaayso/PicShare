@@ -65,8 +65,7 @@ public class FriendsFragment extends Fragment {
         Log.d(TAG, "searchForMatch: searching for a match: ");
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         Query query = databaseReference.child("friends")
-                .child(FirebaseAuth.getInstance()
-                        .getCurrentUser().getUid());
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {

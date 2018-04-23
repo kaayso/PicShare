@@ -2,6 +2,7 @@ package com.kaayso.benyoussafaycel.android_app.Home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
@@ -18,11 +19,14 @@ import android.widget.RelativeLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.kaayso.benyoussafaycel.android_app.Adding.GalleryFragment;
 import com.kaayso.benyoussafaycel.android_app.Authentication.StartActivity;
+import com.kaayso.benyoussafaycel.android_app.Models.Group;
 import com.kaayso.benyoussafaycel.android_app.Models.Photo;
 import com.kaayso.benyoussafaycel.android_app.R;
 import com.kaayso.benyoussafaycel.android_app.Tools.BotNavView;
 import com.kaayso.benyoussafaycel.android_app.Tools.CommentsFragment;
+import com.kaayso.benyoussafaycel.android_app.Tools.DatabaseMethods;
 import com.kaayso.benyoussafaycel.android_app.Tools.PublishingListAdapter;
 import com.kaayso.benyoussafaycel.android_app.Tools.SectionsPagerAdapter;
 import com.kaayso.benyoussafaycel.android_app.Tools.UnivImageLoader;
@@ -33,6 +37,8 @@ public class HomeActivity extends AppCompatActivity implements PublishingListAda
     private Context mContext = HomeActivity.this;
     private static final int NUM_ACTIVITY = 2;
     private static final int HOME_FRAG = 1;
+    private static final int GROUP_FRAG = 2;
+    private Group mCurrentGroup;
 
     private FirebaseAuth mAuth;
     private  FirebaseAuth.AuthStateListener mAutListener;
@@ -56,9 +62,28 @@ public class HomeActivity extends AppCompatActivity implements PublishingListAda
         initImageLoader();
         setupBottomNavigationView();
         setupViewPager();
+        getExtrasIntent ();
         //mAuth.signOut();
     }
+    private void getExtrasIntent (){
+        Intent i = getIntent();
+        Log.d(TAG, "getExtrasIntent: New image URL");
+        if(i.hasExtra("Selected Image") || i.hasExtra("Selected Bitmap")) {
+            if (i.hasExtra("Selected Image")) {
+                //set a new group picture
+                DatabaseMethods databaseMethods = new DatabaseMethods(mContext);
+                databaseMethods.uploadGroupPhoto(getIntent().getStringExtra("group_name"), getIntent().getStringExtra("group_id"),
+                        null, null, 0, null,i.getStringExtra("Selected Image"));
+            } else if (i.hasExtra("Selected Bitmap")) {
+                //set a new group picture
+                DatabaseMethods databaseMethods = new DatabaseMethods(mContext);
+                databaseMethods.uploadGroupPhoto(getIntent().getStringExtra("group_name"), getIntent().getStringExtra("group_id"),
+                        null, null, 0, (Bitmap) i.getParcelableExtra("Selected Bitmap"), null);
+            }
 
+        }
+
+    }
 
     /*
         Authentification on firebase
@@ -81,6 +106,10 @@ public class HomeActivity extends AppCompatActivity implements PublishingListAda
 
     }
 
+    public Group getCurrentGroup(){
+        return mCurrentGroup;
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -88,7 +117,15 @@ public class HomeActivity extends AppCompatActivity implements PublishingListAda
         FirebaseUser currentUser = mAuth.getCurrentUser();
         mAuth.addAuthStateListener(mAutListener);
         checkUser(mAuth.getCurrentUser());
-        viewPager.setCurrentItem(HOME_FRAG);
+        if(getIntent().hasExtra("calling fragment")){
+            Log.d(TAG, "onCreate: fragment extra received");
+            if(getIntent().getStringExtra("calling fragment").equals("GroupsFragment")){
+                viewPager.setCurrentItem(GROUP_FRAG);
+                mCurrentGroup =  getIntent().getParcelableExtra("group");
+            }
+        }else {
+            viewPager.setCurrentItem(HOME_FRAG);
+        }
     }
 
     public void onStop() {
@@ -169,7 +206,7 @@ public class HomeActivity extends AppCompatActivity implements PublishingListAda
 
     }
 
-    private void checkUser( FirebaseUser user ){
+    private void checkUser(FirebaseUser user){
         Log.d(TAG, "checkUser: Checking state of current user");
         if (user == null){
             Intent i = new Intent(mContext, StartActivity.class);
@@ -190,14 +227,25 @@ public class HomeActivity extends AppCompatActivity implements PublishingListAda
         }
     }
 
+
     @Override
     public void onLoadMoreItems() {
         Log.d(TAG, "onLoadMoreItems: displaying more photos");
 
-        HomeFragment fragment = (HomeFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:"+R.id.viewpager_container + ":"+ viewPager.getCurrentItem());
-        if (fragment != null){
-            fragment.displayMorePhotos();
-        }
+        if(viewPager.getCurrentItem() == HOME_FRAG){
+            HomeFragment fragment = (HomeFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:"+R.id.viewpager_container + ":"+ viewPager.getCurrentItem());
+            if (fragment != null){
+                fragment.displayMorePhotos();
+            }
+        }else if(viewPager.getCurrentItem() == GROUP_FRAG){
+            GroupsFragment fragment1 = (GroupsFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:"+R.id.viewpager_container + ":"+ viewPager.getCurrentItem());
+            if (fragment1 != null){
+                fragment1.displayMorePhotos();
+            }
 
+        }
     }
+
+
+
 }

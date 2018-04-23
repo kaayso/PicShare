@@ -213,8 +213,6 @@ public class EditionFragment extends Fragment  implements ConfirmPwdDialog.OnCon
                 // user informations
                 setupProfileWidgets(mdatabaseMethods.getAccountSettings(dataSnapshot));
 
-
-                // current user images
             }
 
             @Override

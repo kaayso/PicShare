@@ -65,7 +65,7 @@ public class ViewProfileFragment extends Fragment {
     private static final int NUM_ACTIVITY =4;
     public Context mContext;
 
-    private static final String TAG = "ProfileFragment";
+    private static final String TAG = "ViewProfileFragment";
     private CircleImageView mProfile_photo;
     private GridView mGridView;
     private TextView mPosts, mFollowers, mFollowing, mUsername, mDiscription, mGroups,mtextEditProfile;
@@ -78,6 +78,7 @@ public class ViewProfileFragment extends Fragment {
     private int followersCount = 0;
     private int followingCount = 0;
     private int postsCount = 0;
+    private boolean isMyFriend;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAutListener;
@@ -524,12 +525,10 @@ public class ViewProfileFragment extends Fragment {
                     }
                     photo.setLikes(likes);
 
-                    Log.d(TAG, "onDataChange: friends list size: "+ mUsers.size());
 
-                    if(!photo.getVisibility().equals("private")){
-                        photos_user.add(photo);
+                    if(photo.getVisibility().equals("public")){
+                            photos_user.add(photo);
                     }
-
                 }
 
 
@@ -544,6 +543,42 @@ public class ViewProfileFragment extends Fragment {
             }
         });
 
+    }
+    public void isMyfriend(final String user_id) {
+        Log.d(TAG, "isMyfriend: look if these users are friends");
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        Query query = databaseReference.child("friends")
+                .child(FirebaseAuth.getInstance()
+                        .getCurrentUser().getUid()).orderByChild("user_id").equalTo(user_id);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot ds: dataSnapshot.getChildren() ){
+                    Log.d(TAG, "onDataChange: match founded step 1: "+ds.getValue().toString());
+                    Query query = databaseReference.child("friends")
+                            .child(user_id).orderByChild("user_id")
+                            .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Log.d(TAG, "onDataChange: match founded step 2 with : "+ user_id);
+                            //they are friends
+                            isMyFriend= true;
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 

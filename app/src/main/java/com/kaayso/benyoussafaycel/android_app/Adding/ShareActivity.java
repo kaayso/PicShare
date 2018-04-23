@@ -14,11 +14,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.kaayso.benyoussafaycel.android_app.Models.Group;
 import com.kaayso.benyoussafaycel.android_app.R;
 import com.kaayso.benyoussafaycel.android_app.Tools.BotNavView;
 import com.kaayso.benyoussafaycel.android_app.Tools.Permissions;
 import com.kaayso.benyoussafaycel.android_app.Tools.SectionsPagerAdapter;
 import com.kaayso.benyoussafaycel.android_app.Tools.SectionsStatePagerAdapter;
+
+import java.util.ArrayList;
 
 /**
  * Created by BenyoussaFaycel on 16/03/2018.
@@ -29,7 +32,8 @@ public class ShareActivity extends AppCompatActivity {
     private Context mContext = ShareActivity.this;
     private static final int NUM_ACTIVITY =0;
     private static final int MY_PERMISSIONS_REQUEST =1;
-
+    private ArrayList<String> groupInfo;
+    private String PublishingGroupId;
     private ViewPager mviewPager;
 
     @Override
@@ -37,12 +41,18 @@ public class ShareActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
         Log.d(TAG, "onCreate: started.");
+
+        groupInfo = new ArrayList<>();
+
         if (checkPermissionsArray(Permissions.PERMISSIONS)){
             setupViewPager();
         }else
         {
             verifyPermissions(Permissions.PERMISSIONS);
         }
+        groupInfo.add(getIntent().getStringExtra("group_id"));
+        groupInfo.add(getIntent().getStringExtra("group_name"));
+        PublishingGroupId = getIntent().getStringExtra("PublishingGroupId");
 
         setupBottomNavigationView();
     }
@@ -65,6 +75,14 @@ public class ShareActivity extends AppCompatActivity {
         tabLayout.getTabAt(0).setText("Gallerie");
         tabLayout.getTabAt(1).setText("Photos");
 
+    }
+
+    public ArrayList<String> getGroupInfo(){
+        return  groupInfo;
+    }
+
+    public String getPublishingGroupId(){
+        return PublishingGroupId;
     }
     /*
         return fragment #

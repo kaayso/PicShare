@@ -131,10 +131,19 @@ public class CommentsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: Back arrow pressed");
-                if (getCallingActivity().equals("HomeActivity")){
-                    getActivity().getSupportFragmentManager().popBackStack();
-                    ((HomeActivity)getActivity()).showLayout();
-                }else {
+                if (getActivity()!=null){
+                    try{if (getCallingActivity().equals("HomeActivity")){
+                        getActivity().getSupportFragmentManager().popBackStack();
+                        ((HomeActivity)getActivity()).showLayout();
+                    }
+                    else {
+                        getActivity().getSupportFragmentManager().popBackStack();
+                    }}
+                    catch (NullPointerException e){
+                        Log.d(TAG, "onClick: NullPointerException"+e.getMessage());
+                    }
+                }
+                else {
                     getActivity().getSupportFragmentManager().popBackStack();
                 }
             }

@@ -15,7 +15,8 @@
             android:id="@+id/list_view"
             android:layout_below="@id/relLayout1"
             android:divider="@android:color/transparent"
-            android:dividerHeight="5dp">
+            android:dividerHeight="5dp"
+            android:layout_marginBottom="50dp">
 
 
         </ListView>

@@ -279,7 +279,10 @@ public class ProfileFragment extends Fragment {
                             likes.add(like);
                         }
                         photo.setLikes(likes);
-                        photos_user.add(photo);
+
+                        if(!photo.getVisibility().equals("protected")){
+                            photos_user.add(photo);
+                        }
 
                     }catch (NullPointerException e){
                         Log.d(TAG, "onDataChange: NullPointerException " +e.getMessage());

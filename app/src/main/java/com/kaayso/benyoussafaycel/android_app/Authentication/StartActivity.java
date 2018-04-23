@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.jackandphantom.circularimageview.CircleImage;
 import com.kaayso.benyoussafaycel.android_app.Home.HomeActivity;
 import com.kaayso.benyoussafaycel.android_app.R;
+import com.kaayso.benyoussafaycel.android_app.Tools.DatabaseMethods;
 
 /**
  * Created by BenyoussaFaycel on 17/03/2018.

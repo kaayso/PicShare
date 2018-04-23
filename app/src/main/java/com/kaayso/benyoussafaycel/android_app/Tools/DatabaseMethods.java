@@ -16,8 +16,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -53,6 +56,7 @@ public class DatabaseMethods {
     private StorageReference mStorageRef;
     private double mPhotoUploadProgress = 0;
 
+
     public DatabaseMethods(Context mcontext) {
         mAuth = FirebaseAuth.getInstance();
         mfirebaseDatabase = FirebaseDatabase.getInstance();
@@ -78,6 +82,38 @@ public class DatabaseMethods {
         }
         return false;
     }*/
+
+    public void removeUserFromGroup(String groupid, String userid){
+        DatabaseReference myRef= FirebaseDatabase.getInstance().getReference();
+        myRef.child("groups").child(groupid).child("users").child(userid).removeValue();
+    }
+
+    public void addUserToGroup(String groupid, String userid){
+        DatabaseReference myRef= FirebaseDatabase.getInstance().getReference();
+        User user = new User();
+        user.setUser_id(userid);
+        myRef.child("groups").child(groupid).child("users").child(userid).setValue(user);
+    }
+
+    public void addNewGroup (String name , String description, String visibility){
+        Group group = new Group();
+        String id_group= mdatabaseReference.child("groups").push().getKey();
+
+        group.setName(name);
+        group.setDescription(description);
+        group.setVisibility(visibility);
+        group.setOwner_id(muserId);
+        group.setGroup_id(id_group);
+        group.setGroup_photo("");
+
+        User user = new User();
+        user.setUser_id(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        //insert to database
+        mdatabaseReference.child("groups").child(id_group).setValue(group);
+        mdatabaseReference.child("groups").child(id_group).child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
+
+    }
 
     public void updateUsername (String username){
         Log.d(TAG, "updateUsername: Updating username to : "+ username);
@@ -395,6 +431,107 @@ public class DatabaseMethods {
                 }
             });
         }
+
+    }
+
+
+    public void uploadGroupPhoto(String groupName, final String group_id,final String description, final String visibility, int countImg, Bitmap bitmap, final String mImgUrl) {
+        Log.d(TAG, "uploadGroupPhoto: ");
+        PathsFile pathsFile = new PathsFile();
+        /**
+         *  Case NEW photo
+         */
+
+        if(groupName.equals("new_photo")){
+            Log.d(TAG, "uploadPhoto: new photo");
+            StorageReference storageReference = mStorageRef.child(pathsFile.FIREBASE_IMG_STORAGE + "/"
+                    + FirebaseAuth.getInstance().getCurrentUser().getUid()+"/photo_"+(countImg+1));
+
+            //convert url to bitmap
+            if (bitmap == null)bitmap = ImageManager.getBitmap(mImgUrl);
+            byte[] data = ImageManager.getBytesFromBitmap(bitmap,100);
+            UploadTask uploadTask =storageReference.putBytes(data);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri firebaseUrl = taskSnapshot.getDownloadUrl();
+                    Toast.makeText(mcontext, "Transfert de photo réussi", Toast.LENGTH_SHORT).show();
+
+                    // add the new photo to : users_photo node et photos node
+                    addPhotoToDb(description ,visibility, firebaseUrl.toString(), group_id);
+
+                    // navigate to home activity
+                    Intent i = new Intent(mcontext, HomeActivity.class);
+                    mcontext.startActivity(i);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "onFailure: upload failed.");
+                    Toast.makeText(mcontext, "Transfert de photo échoué", Toast.LENGTH_SHORT).show();
+
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount()) ;
+
+                    if(progress - 15 > mPhotoUploadProgress){
+                        Toast.makeText(mcontext, "Transfert de photo en cours: "+ String.format("%.0f",progress )+ "%", Toast.LENGTH_SHORT).show();
+                        mPhotoUploadProgress = progress;
+                    }
+
+                    Log.d(TAG, "onProgress: upload progress: "+ progress + "% done");
+                }
+            });
+        }
+
+        /**
+         *  Case GROUP photo
+         */
+
+        else {
+            Log.d(TAG, "uploadPhoto: new group photo");
+            StorageReference storageReference = mStorageRef.child(pathsFile.FIREBASE_IMG_STORAGE + "/"
+                    + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/group_photo_" + (groupName));
+
+            //convert url to bitmap
+            if (bitmap == null) bitmap = ImageManager.getBitmap(mImgUrl);
+            byte[] data = ImageManager.getBytesFromBitmap(bitmap, 100);
+            UploadTask uploadTask = storageReference.putBytes(data);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri firebaseUrl = taskSnapshot.getDownloadUrl();
+                    Toast.makeText(mcontext, "Transfert de photo réussi", Toast.LENGTH_SHORT).show();
+
+                    // add the new photo to : groups node
+                    setGroupPhoto(firebaseUrl.toString(), group_id);
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "onFailure: upload failed.");
+                    Toast.makeText(mcontext, "Transfert de photo échoué", Toast.LENGTH_SHORT).show();
+
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+
+                    if (progress - 15 > mPhotoUploadProgress) {
+                        Toast.makeText(mcontext, "Transfert de photo en cours: " + String.format("%.0f", progress) + "%", Toast.LENGTH_SHORT).show();
+                        mPhotoUploadProgress = progress;
+                    }
+
+                    Log.d(TAG, "onProgress: upload progress: " + progress + "% done");
+                }
+            });
+        }
     }
 
     private void setProfilePhoto(String imgUrl){
@@ -402,6 +539,14 @@ public class DatabaseMethods {
         mdatabaseReference.child("user_account_settings")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("profile_photo").setValue(imgUrl);
+
+    }
+
+    private void setGroupPhoto(String imgUrl, String groupid ){
+        Log.d(TAG, "setProfilePhoto: setting group image : "+ imgUrl);
+        mdatabaseReference.child("groups")
+                .child(groupid)
+                .child("group_photo").setValue(imgUrl);
 
     }
 
@@ -434,8 +579,9 @@ public class DatabaseMethods {
 
     }
 
+
     private String extractTags(String desc){
-        if (desc.indexOf('#')>0){
+        if (desc.indexOf('#')>=0){
             StringBuilder stringBuilder = new StringBuilder();
             char[] charArray = desc.toCharArray();
             boolean foundword = false;
@@ -459,6 +605,5 @@ public class DatabaseMethods {
         return "";
 
     }
-
 
 }

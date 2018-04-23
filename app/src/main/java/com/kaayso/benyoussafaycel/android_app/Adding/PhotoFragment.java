@@ -14,9 +14,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Switch;
 
+import com.kaayso.benyoussafaycel.android_app.Group.GroupActivity;
+import com.kaayso.benyoussafaycel.android_app.Home.HomeActivity;
 import com.kaayso.benyoussafaycel.android_app.Profile.SettingsActivity;
 import com.kaayso.benyoussafaycel.android_app.R;
 import com.kaayso.benyoussafaycel.android_app.Tools.Permissions;
+
+import java.util.ArrayList;
 
 /**
  * Created by BenyoussaFaycel on 16/03/2018.
@@ -62,24 +66,58 @@ public class PhotoFragment extends Fragment {
             Bitmap bm = (Bitmap) data.getExtras().get("data");
             // from profile settings
             if(((ShareActivity)getActivity()).getTask() != 0){
-                try {
-                    Log.d(TAG, "onActivityResult: reveive new bitmap from camera"+bm);
-                    Intent i = new Intent(getActivity(), SettingsActivity.class);
-                    i.putExtra("Selected Bitmap", bm);
-                    i.putExtra("to fragment", "EditionFragment");
-                    startActivity(i);
-                    getActivity().finish();
-                }catch (NullPointerException e){
-                    Log.d(TAG, "onActivityResult: NullPointerException "+ e.getMessage());
+                if(((ShareActivity)getActivity()).getTask() == Intent.FLAG_ACTIVITY_MULTIPLE_TASK){
+                    //for group photo
+                    try {
+                        ShareActivity shareActivity = (ShareActivity) getActivity();
+                        ArrayList<String> myDataFromActivity = shareActivity.getGroupInfo();
+                        Log.d(TAG, "onClick: group info received in gallery fragment : " +myDataFromActivity.get(0) +"/"+myDataFromActivity.get(1));
+                        Log.d(TAG, "onActivityResult: reveive new bitmap from camera"+bm);
+                        Intent i = new Intent(getActivity(), HomeActivity.class);
+                        i.putExtra("Selected Bitmap", bm);
+                        i.putExtra("group_id", myDataFromActivity.get(0));
+                        i.putExtra("group_name", myDataFromActivity.get(1));
+                        startActivity(i);
+                        getActivity().finish();
+                    }catch (NullPointerException e){
+                        Log.d(TAG, "onActivityResult: NullPointerException "+ e.getMessage());
+                    }
+                }else {
+                    // for profile photo
+                    try {
+                        Log.d(TAG, "onActivityResult: reveive new bitmap from camera"+bm);
+                        Intent i = new Intent(getActivity(), SettingsActivity.class);
+                        i.putExtra("Selected Bitmap", bm);
+                        i.putExtra("to fragment", "EditionFragment");
+                        startActivity(i);
+                        getActivity().finish();
+                    }catch (NullPointerException e){
+                        Log.d(TAG, "onActivityResult: NullPointerException "+ e.getMessage());
+                    }
                 }
+
             }
             //from root
             else{
                 try {
-                    Log.d(TAG, "onActivityResult: reveive new bitmap from camera"+bm);
-                    Intent i = new Intent(getActivity(), SharingActivity.class);
-                    i.putExtra("Selected Bitmap", bm);
-                    startActivity(i);
+                    // for publishing
+                    ShareActivity shareActivity = (ShareActivity) getActivity();
+                    //in to group
+                    if(shareActivity.getPublishingGroupId()!=null){
+                        Log.d(TAG, "onActivityResult: reveive new bitmap from camera"+bm);
+                        String PublishingGroupId = shareActivity.getPublishingGroupId();
+                        Intent i = new Intent(getActivity(), SharingActivity.class);
+                        i.putExtra("PublishingGroupId",PublishingGroupId);
+                        i.putExtra("Selected Bitmap", bm);
+                        startActivity(i);
+                    }
+                    //in to home
+                    else {
+                        Log.d(TAG, "onActivityResult: reveive new bitmap from camera"+bm);
+                        Intent i = new Intent(getActivity(), SharingActivity.class);
+                        i.putExtra("Selected Bitmap", bm);
+                        startActivity(i);
+                    }
                 }catch (NullPointerException e){
                     Log.d(TAG, "onActivityResult: NullPointerException "+ e.getMessage());
                 }

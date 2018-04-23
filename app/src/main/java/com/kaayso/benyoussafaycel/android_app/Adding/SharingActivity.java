@@ -35,11 +35,12 @@ import com.kaayso.benyoussafaycel.android_app.Tools.UnivImageLoader;
 public class SharingActivity extends AppCompatActivity{
     private static final String TAG = "SharingActivity";
     private ImageView mBackArrow;
-    private TextView mShare;
+    private TextView mShare, tv_private;
     private static final String APPEND = "file://";
     private int countImg = 0;
     private EditText mDescription;
     private String mImgUrl;
+    private CheckBox checkBox;
     private ProgressBar mprogressBar;
     private Bitmap bitmap;
 
@@ -59,14 +60,14 @@ public class SharingActivity extends AppCompatActivity{
 
         mBackArrow = (ImageView) findViewById(R.id.ivbackArrow);
         mShare = (TextView) findViewById(R.id.tvShare);
+        tv_private = (TextView) findViewById(R.id.tv_private);
         final Context mcontext = SharingActivity.this;
         mdatabaseMethods = new DatabaseMethods(mcontext);
         mDescription = (EditText) findViewById(R.id.description);
         mImgUrl = getIntent().getStringExtra("Selected Image");
         mprogressBar = (ProgressBar) findViewById(R.id.progressBar);
         mprogressBar.setVisibility(View.GONE);
-
-        final CheckBox checkBox = (CheckBox) findViewById(R.id.checkbox);
+        checkBox = (CheckBox) findViewById(R.id.checkbox);
 
         mBackArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +77,10 @@ public class SharingActivity extends AppCompatActivity{
             }
         });
 
-
+        if(getIntent().hasExtra("PublishingGroupId")) {
+            checkBox.setVisibility(View.INVISIBLE);
+            tv_private.setVisibility(View.INVISIBLE);
+        }
         mShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,40 +89,67 @@ public class SharingActivity extends AppCompatActivity{
                 String description = mDescription.getText().toString();
                 String visibility = "public";
 
+                // publishing for a GroupFragment
+                if(getIntent().hasExtra("PublishingGroupId")){
+                    visibility = "protected";
+                    //came from gallery
+                    if(getIntent().hasExtra("Selected Image")) {
+                        if (!description.equals("")) {
+                            mdatabaseMethods.uploadGroupPhoto("new_photo", getIntent().getStringExtra("PublishingGroupId")
+                                    , description, visibility, countImg, null, mImgUrl);
+                        } else {
+                            Toast.makeText(mcontext, "Complétez le champ description", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-                //came from gallery
-                if(getIntent().hasExtra("Selected Image")){
-                    if (checkBox.isChecked() && !description.equals("")){
-                        Toast.makeText(mcontext , "Chargement de la photo...",Toast.LENGTH_SHORT ).show();
-                        visibility = "private";
-                        mprogressBar.setVisibility(View.VISIBLE);
-                        mdatabaseMethods.uploadPhoto("new_photo", description, visibility, countImg, mImgUrl,"",null);
-                    }else if(!checkBox.isChecked() && !description.equals("")){
-                        Toast.makeText(mcontext , "Chargement de la photo...",Toast.LENGTH_SHORT ).show();
-                        mprogressBar.setVisibility(View.VISIBLE);
-                        mdatabaseMethods.uploadPhoto("new_photo", description, visibility, countImg, mImgUrl, "",null);
-                    }
-                    else {
-                        Toast.makeText(mcontext,"Complétez le champ description",Toast.LENGTH_SHORT).show();
-                    }
-                }
-                //came from camera
-                else if(getIntent().hasExtra("Selected Bitmap")){
-                    bitmap = (Bitmap) getIntent().getParcelableExtra("Selected Bitmap");
-                    if (checkBox.isChecked() && !description.equals("")){
-                        Toast.makeText(mcontext , "Chargement de la photo...",Toast.LENGTH_SHORT ).show();
-                        visibility = "private";
-                        mprogressBar.setVisibility(View.VISIBLE);
-                        mdatabaseMethods.uploadPhoto("new_photo", description, visibility, countImg, null,"",bitmap);
-                    }else if(!checkBox.isChecked() && !description.equals("")){
-                        Toast.makeText(mcontext , "Chargement de la photo...",Toast.LENGTH_SHORT ).show();
-                        mprogressBar.setVisibility(View.VISIBLE);
-                        mdatabaseMethods.uploadPhoto("new_photo", description, visibility, countImg, null, "",bitmap);
-                    }else {
-                        Toast.makeText(mcontext,"Complétez le champ description",Toast.LENGTH_SHORT).show();
+                    else if(getIntent().hasExtra("Selected Bitmap")){
+                        bitmap = (Bitmap) getIntent().getParcelableExtra("Selected Bitmap");
+                        if (!description.equals("")) {
+                            mdatabaseMethods.uploadGroupPhoto("new_photo", getIntent().getStringExtra("PublishingGroupId")
+                                    , description, visibility, countImg, bitmap, null);
+                        } else {
+                            Toast.makeText(mcontext, "Complétez le champ description", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                 }
+                // publishing for HomeFragment
+                else{
+                    //came from gallery
+                    if(getIntent().hasExtra("Selected Image")){
+                        if (checkBox.isChecked() && !description.equals("")){
+                            Toast.makeText(mcontext , "Chargement de la photo...",Toast.LENGTH_SHORT ).show();
+                            visibility = "private";
+                            mprogressBar.setVisibility(View.VISIBLE);
+                            mdatabaseMethods.uploadPhoto("new_photo", description, visibility, countImg, mImgUrl,"",null);
+                        }else if(!checkBox.isChecked() && !description.equals("")){
+                            Toast.makeText(mcontext , "Chargement de la photo...",Toast.LENGTH_SHORT ).show();
+                            mprogressBar.setVisibility(View.VISIBLE);
+                            mdatabaseMethods.uploadPhoto("new_photo", description, visibility, countImg, mImgUrl, "",null);
+                        }
+                        else {
+                            Toast.makeText(mcontext,"Complétez le champ description",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    //came from camera
+                    else if(getIntent().hasExtra("Selected Bitmap")){
+                        bitmap = (Bitmap) getIntent().getParcelableExtra("Selected Bitmap");
+                        if (checkBox.isChecked() && !description.equals("")){
+                            Toast.makeText(mcontext , "Chargement de la photo...",Toast.LENGTH_SHORT ).show();
+                            visibility = "private";
+                            mprogressBar.setVisibility(View.VISIBLE);
+                            mdatabaseMethods.uploadPhoto("new_photo", description, visibility, countImg, null,"",bitmap);
+                        }else if(!checkBox.isChecked() && !description.equals("")){
+                            Toast.makeText(mcontext , "Chargement de la photo...",Toast.LENGTH_SHORT ).show();
+                            mprogressBar.setVisibility(View.VISIBLE);
+                            mdatabaseMethods.uploadPhoto("new_photo", description, visibility, countImg, null, "",bitmap);
+                        }else {
+                            Toast.makeText(mcontext,"Complétez le champ description",Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }
+
 
 
 

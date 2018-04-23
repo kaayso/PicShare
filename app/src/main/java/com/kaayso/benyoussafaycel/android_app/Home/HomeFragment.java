@@ -41,7 +41,6 @@ public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
 
     private ArrayList<Photo> mphotos;
-    private ArrayList<Photo> mphotos2;
     private ArrayList<String> mfollowing;
     private ArrayList<String> mFriends;
     private ArrayList<String> mFriends2;
@@ -60,7 +59,6 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home,container,false);
         mListView = (ListView) view.findViewById(R.id.list_view);
         mphotos = new ArrayList<>();
-        mphotos2 = new ArrayList<>();
         mfollowing = new ArrayList<>();
         mFriends = new ArrayList<>();
         mFriends2 = new ArrayList<>();
@@ -233,7 +231,8 @@ public class HomeFragment extends Fragment {
                                                 }
                                             }
                                             // they are friends, make something
-                                            getPhotosOfFriends();                                        }
+                                            getPhotosOfFriends();
+                                        }
 
                                         @Override
                                         public void onCancelled(DatabaseError databaseError) {
@@ -392,7 +391,6 @@ public class HomeFragment extends Fragment {
                 mresults = mresults +iterations;
                 publishingListAdapter.notifyDataSetChanged();
             }
-
 
 
         }catch (NullPointerException e){

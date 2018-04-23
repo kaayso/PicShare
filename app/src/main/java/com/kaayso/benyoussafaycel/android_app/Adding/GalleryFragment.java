@@ -19,6 +19,8 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.kaayso.benyoussafaycel.android_app.Group.GroupActivity;
+import com.kaayso.benyoussafaycel.android_app.Home.HomeActivity;
 import com.kaayso.benyoussafaycel.android_app.Profile.SettingsActivity;
 import com.kaayso.benyoussafaycel.android_app.R;
 import com.kaayso.benyoussafaycel.android_app.Tools.GridImageAdapter;
@@ -75,20 +77,48 @@ public class GalleryFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "onClick: navigate to final share screen.");
 
-                //See if the photo selected is for profile photo or for publishing photo
+                //See if the photo selected is for profile photo, for group photo or for publishing photo
                 //profile photo has intent with flag comes from ShareActivity
                 if(((ShareActivity)getActivity()).getTask() != 0){
-                    // for profile photo
-                    Intent i = new Intent(getActivity(), SettingsActivity.class);
-                    i.putExtra("Selected Image", mImageSelected);
-                    i.putExtra("to fragment", "EditionFragment");
-                    startActivity(i);
-                    getActivity().finish();
+                    if(((ShareActivity)getActivity()).getTask() == Intent.FLAG_ACTIVITY_MULTIPLE_TASK){
+                        ShareActivity shareActivity = (ShareActivity) getActivity();
+                        ArrayList<String> myDataFromActivity = shareActivity.getGroupInfo();
+                        Log.d(TAG, "onClick: group info received in gallery fragment : " +myDataFromActivity.get(0) +"/"+myDataFromActivity.get(1));
+                        //for group photo
+                        Intent i = new Intent(getActivity(), HomeActivity.class);
+                        i.putExtra("Selected Image", mImageSelected);
+                        i.putExtra("group_id", myDataFromActivity.get(0));
+                        i.putExtra("group_name", myDataFromActivity.get(1));
+                        startActivity(i);
+                        getActivity().finish();
+                    }else {
+                        // for profile photo
+                        Intent i = new Intent(getActivity(), SettingsActivity.class);
+                        i.putExtra("Selected Image", mImageSelected);
+                        i.putExtra("to fragment", "EditionFragment");
+                        startActivity(i);
+                        getActivity().finish();
+                    }
+
                 }else{
                     // for publishing
-                    Intent i = new Intent(getActivity(), SharingActivity.class);
-                    i.putExtra("Selected Image", mImageSelected);
-                    startActivity(i);
+                    ShareActivity shareActivity = (ShareActivity) getActivity();
+                    //in to group
+                    if(shareActivity.getPublishingGroupId()!=null){
+                        Log.d(TAG, "onClick: publishing for group");
+                        String PublishingGroupId = shareActivity.getPublishingGroupId();
+                        Intent i = new Intent(getActivity(), SharingActivity.class);
+                        i.putExtra("PublishingGroupId",PublishingGroupId);
+                        i.putExtra("Selected Image", mImageSelected);
+                        startActivity(i);
+                    }
+                    //in to home
+                    else {
+                        Intent i = new Intent(getActivity(), SharingActivity.class);
+                        i.putExtra("Selected Image", mImageSelected);
+                        startActivity(i);
+                    }
+                    
                 }
 
 
@@ -141,33 +171,34 @@ public class GalleryFragment extends Fragment {
     private void setupGrid(String myDirectory){
         Log.d(TAG, "setupGrid: Directory chosen : "+ myDirectory);
         final ArrayList<String> urls = SearchFile.getFilePaths(myDirectory);
+        if (urls.size()!=0){
+            // set the grid column width
+            int widthWindow = getResources().getDisplayMetrics().widthPixels;
+            int widthImg = widthWindow/COL_GRID;
+            mgridView.setColumnWidth(widthImg);
 
-        // set the grid column width
-        int widthWindow = getResources().getDisplayMetrics().widthPixels;
-        int widthImg = widthWindow/COL_GRID;
-        mgridView.setColumnWidth(widthImg);
+            // use the grid adapter to adapter img to gridview
+            GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imgview,APPEND,urls);
+            mgridView.setAdapter(adapter);
 
-        // use the grid adapter to adapter img to gridview
-        GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imgview,APPEND,urls);
-        mgridView.setAdapter(adapter);
-
-        // display first photo when activity  fragment view is inflated
-        try{
-            setImage(urls.get(0), mGallery, APPEND);
-            mImageSelected = urls.get(0);
-        }catch (NullPointerException e){
-            Log.d(TAG, "setupGrid: Failed : no photo to display "+ e.getMessage());
-        }
-
-
-        mgridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemClick: changing display image to: " + urls.get(position));
-                setImage(urls.get(position), mGallery, APPEND);
-                mImageSelected = urls.get(position);
+            // display first photo when activity  fragment view is inflated
+            try{
+                setImage(urls.get(0), mGallery, APPEND);
+                mImageSelected = urls.get(0);
+            }catch (NullPointerException e){
+                Log.d(TAG, "setupGrid: Failed : no photo to display "+ e.getMessage());
             }
-        });
+
+
+            mgridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Log.d(TAG, "onItemClick: changing display image to: " + urls.get(position));
+                    setImage(urls.get(position), mGallery, APPEND);
+                    mImageSelected = urls.get(position);
+                }
+            });
+        }
     }
 
     private void setImage(String url, ImageView imageView, String append){

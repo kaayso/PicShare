@@ -58,7 +58,6 @@ public class UserListAdapter extends ArrayAdapter<User> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         final ViewHolder viewHolder;
         //ViewHolder build pattern
-        if(convertView == null){
             convertView = layoutInflater.inflate(layoutRessource, parent, false);
             viewHolder = new ViewHolder();
 
@@ -67,9 +66,7 @@ public class UserListAdapter extends ArrayAdapter<User> {
             viewHolder.profilePhoto = (CircleImageView) convertView.findViewById(R.id.search_profilePhoto);
 
             convertView.setTag(viewHolder);
-        }else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
+
 
         //set username
         viewHolder.username.setText(getItem(position).getUsername());
@@ -78,6 +75,7 @@ public class UserListAdapter extends ArrayAdapter<User> {
         viewHolder.email.setText(getItem(position).getEmail());
 
         //set profile photo
+        Log.d(TAG, "getView: position ="+position);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         Query query = databaseReference.child("user_account_settings")
@@ -88,7 +86,8 @@ public class UserListAdapter extends ArrayAdapter<User> {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()){
-                    Log.d(TAG, "onDataChange: found user "+ ds.getValue(UserAccountSettings.class).toString());
+                    Log.d(TAG, "onDataChange: found user "+ ds.getValue(UserAccountSettings.class).getUsername()+"/"+
+                            ds.getValue(UserAccountSettings.class).getProfile_photo());
 
                     ImageLoader imageLoader = ImageLoader.getInstance();
                     imageLoader.displayImage(ds.getValue(UserAccountSettings.class).getProfile_photo(), viewHolder.profilePhoto);
@@ -100,6 +99,7 @@ public class UserListAdapter extends ArrayAdapter<User> {
 
             }
         });
+
 
         return convertView;
     }

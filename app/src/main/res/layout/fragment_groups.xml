@@ -3,24 +3,41 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/light_grey"
     >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/relLayout1">
+        android:id="@+id/relLayout1"
+        android:visibility="visible">
+        <include layout="@layout/layout_group"/>
 
     </RelativeLayout>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-
-        android:text="Group fragment"
+        android:id="@+id/tv_group"
+        android:gravity="center"
+        android:text="Selectionnez un groupe dans l'onglet groupe"
         android:textSize="20sp"
-        android:layout_centerInParent="true"/>
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_centerInParent="true"
+        android:padding="1dp"
+        android:visibility="visible"/>
+    <ListView
+        android:layout_marginTop="140dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_view"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        android:visibility="invisible">
 
+
+    </ListView>
 
 
 </RelativeLayout>
