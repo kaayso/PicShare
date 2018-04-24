@@ -95,6 +95,8 @@ public class SharingActivity extends AppCompatActivity{
                     //came from gallery
                     if(getIntent().hasExtra("Selected Image")) {
                         if (!description.equals("")) {
+                            Toast.makeText(mcontext , "Chargement de la photo...",Toast.LENGTH_SHORT ).show();
+                            mprogressBar.setVisibility(View.VISIBLE);
                             mdatabaseMethods.uploadGroupPhoto("new_photo", getIntent().getStringExtra("PublishingGroupId")
                                     , description, visibility, countImg, null, mImgUrl);
                         } else {
@@ -105,6 +107,8 @@ public class SharingActivity extends AppCompatActivity{
                     else if(getIntent().hasExtra("Selected Bitmap")){
                         bitmap = (Bitmap) getIntent().getParcelableExtra("Selected Bitmap");
                         if (!description.equals("")) {
+                            Toast.makeText(mcontext , "Chargement de la photo...",Toast.LENGTH_SHORT ).show();
+                            mprogressBar.setVisibility(View.VISIBLE);
                             mdatabaseMethods.uploadGroupPhoto("new_photo", getIntent().getStringExtra("PublishingGroupId")
                                     , description, visibility, countImg, bitmap, null);
                         } else {
