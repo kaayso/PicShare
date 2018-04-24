@@ -65,17 +65,22 @@ public class UserListAdapter extends ArrayAdapter<User> {
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         final ViewHolder viewHolder;
+        View view = convertView;
         //ViewHolder build pattern
-            convertView = layoutInflater.inflate(layoutRessource, parent, false);
+        if (view == null) {
+            view = layoutInflater.inflate(layoutRessource, parent, false);
             viewHolder = new ViewHolder();
 
-            viewHolder.username = (TextView) convertView.findViewById(R.id.searchUsername);
-            viewHolder.email = (TextView) convertView.findViewById(R.id.searchEmail);
-            viewHolder.profilePhoto = (CircleImageView) convertView.findViewById(R.id.search_profilePhoto);
-            viewHolder.add = (ImageView) convertView.findViewById(R.id.iv_add);
-            viewHolder.added = (ImageView) convertView.findViewById(R.id.iv_added);
+            viewHolder.username = (TextView) view.findViewById(R.id.searchUsername);
+            viewHolder.email = (TextView) view.findViewById(R.id.searchEmail);
+            viewHolder.profilePhoto = (CircleImageView) view.findViewById(R.id.search_profilePhoto);
+            viewHolder.add = (ImageView) view.findViewById(R.id.iv_add);
+            viewHolder.added = (ImageView) view.findViewById(R.id.iv_added);
 
-            convertView.setTag(viewHolder);
+            view.setTag(viewHolder);
+        }else {
+            viewHolder =(ViewHolder) view.getTag();
+        }
         //set add/add button
         if(mCurrentGroup != null){
             //come from GroupFragment
@@ -141,9 +146,14 @@ public class UserListAdapter extends ArrayAdapter<User> {
                 mcontext.startActivity(i);
             }
         });
+        viewHolder.added.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mcontext,"Cet utilisateur est déjà présent dans ce groupe.",Toast.LENGTH_SHORT).show();
+            }
+        });
 
-
-        return convertView;
+        return view;
     }
 
     private boolean isInList(List<String> users , String userid) {

@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.kaayso.benyoussafaycel.android_app.Adding.ShareActivity;
+import com.kaayso.benyoussafaycel.android_app.Group.GroupActivity;
 import com.kaayso.benyoussafaycel.android_app.Home.HomeActivity;
 import com.kaayso.benyoussafaycel.android_app.Models.Group;
 import com.kaayso.benyoussafaycel.android_app.R;
@@ -69,9 +70,9 @@ public class GroupListAdapter extends ArrayAdapter<Group> {
         final String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         //ViewHolder build pattern
+        if (convertView == null) {
             convertView = layoutInflater.inflate(layoutRessource, parent, false);
             viewHolder = new ViewHolder();
-
             viewHolder.name = (TextView) convertView.findViewById(R.id.group_name);
             viewHolder.description = (TextView) convertView.findViewById(R.id.description);
             viewHolder.users_number = (TextView) convertView.findViewById(R.id.tv_nb_users);
@@ -84,10 +85,16 @@ public class GroupListAdapter extends ArrayAdapter<Group> {
 
 
             convertView.setTag(viewHolder);
+        }
+        else {
+            viewHolder =(ViewHolder) convertView.getTag();
+        }
 
         //set crown
         if(getItem(position).getOwner_id().equals(user_id)) {
             viewHolder.crown.setVisibility(View.VISIBLE);
+        }else {
+            viewHolder.crown.setVisibility(View.INVISIBLE);
         }
 
         //set add/added icon
@@ -158,7 +165,7 @@ public class GroupListAdapter extends ArrayAdapter<Group> {
                         DatabaseMethods databaseMethods = new DatabaseMethods(mcontext);
                         databaseMethods.addUserToGroup(getItem(position).getGroup_id(), user_id);
                         Toast.makeText(mcontext,"Groupe ajouté.",Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(mcontext, HomeActivity.class);
+                        Intent i = new Intent(mcontext, GroupActivity.class);
                         mcontext.startActivity(i);
                     }
                     else {
@@ -180,7 +187,7 @@ public class GroupListAdapter extends ArrayAdapter<Group> {
                     DatabaseMethods databaseMethods = new DatabaseMethods(mcontext);
                     databaseMethods.removeUserFromGroup(getItem(position).getGroup_id(), user_id);
                     Toast.makeText(mcontext,"Groupe retiré.",Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(mcontext, HomeActivity.class);
+                    Intent i = new Intent(mcontext, GroupActivity.class);
                     mcontext.startActivity(i);
                 }else {
                     Toast.makeText(mcontext,"Impossible de quitter le groupe car vous êtes le propriétaire.",Toast.LENGTH_SHORT).show();

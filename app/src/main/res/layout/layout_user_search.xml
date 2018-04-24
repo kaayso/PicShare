@@ -58,22 +58,22 @@
                     android:textStyle="italic"
                     />
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="30dp"
+                    android:layout_marginRight="15dp"
                     android:src="@drawable/ic_plus"
                     android:background="@drawable/rounded_btn"
                     android:id="@+id/iv_add"
                     android:visibility="visible"
                     />
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="30dp"
+                    android:layout_marginRight="15dp"
                     android:src="@drawable/ic_checked_black"
                     android:background="@drawable/rounded_btn"
                     android:id="@+id/iv_added"
