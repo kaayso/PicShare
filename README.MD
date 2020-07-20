@@ -2,7 +2,7 @@
 
 Picshare
 
-Instagram clone built with Android.
+Android app built with React-Native framework. Share your photos, leave comments and likes, follow the other users, etc...
 
 ## Project Screen Shot(s)
 
