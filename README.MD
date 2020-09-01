@@ -2,7 +2,7 @@
 
 Picshare
 
-Android app built with React-Native framework. Share your photos, leave comments and likes, follow the other users, etc...
+Android app built with Android. Share your photos, leave comments and likes, follow the other users, etc...
 
 ## Project Screen Shot(s)
 
